@@ -12,6 +12,13 @@ export const fetchTopicData = () => {
       dispatch(replaceTopic(allTopic || []));
     } catch (error) {
       console.error(`💥💥 ${error}`);
+      dispatch(
+        showNotification({
+          status: "error",
+          title: "Error!",
+          message: "Loading topic data failed!",
+        })
+      );
     }
   };
 };

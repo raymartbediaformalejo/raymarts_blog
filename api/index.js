@@ -4,18 +4,18 @@ import cors from "cors";
 
 const app = express();
 
-const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  database: "blog",
-});
-
-// const mysql_pool = mysql.createPool({
-//   connectionLimit: 100,
+// const db = mysql.createConnection({
 //   host: "localhost",
 //   user: "root",
 //   database: "blog",
 // });
+
+const mysql_pool = mysql.createPool({
+  connectionLimit: 100,
+  host: "localhost",
+  user: "root",
+  database: "blog",
+});
 
 app.use(express.json());
 app.use(cors());
@@ -26,33 +26,33 @@ app.get("/", (req, res) => {
 
 app.get("/topics", (req, res) => {
   const q = "SELECT * FROM topic";
-  db.query(q, (err, data) => {
-    if (err) {
-      return res.json(err);
-    } else {
-      return res.json(data);
-    }
-  });
-
-  // mysql_pool.getConnection(function (err, connection) {
-  //   const q = "SELECT * FROM topic";
-
+  // db.query(q, (err, data) => {
   //   if (err) {
-  //     connection.release();
-  //     console.log("Error getting mysql_pool connection: " + err);
-  //     throw err;
+  //     return res.json(err);
+  //   } else {
+  //     return res.json(data);
   //   }
-
-  //   connection.query(q, (err, data) => {
-  //     if (err) {
-  //       return res.json(err);
-  //     } else {
-  //       return res.json(data);
-  //     }
-  //     console.log("mysql_pool.release()");
-  //     connection.release();
-  //   });
   // });
+
+  mysql_pool.getConnection(function (err, connection) {
+    const q = "SELECT * FROM topic";
+
+    if (err) {
+      connection.release();
+      console.log("Error getting mysql_pool connection: " + err);
+      throw err;
+    }
+
+    connection.query(q, (err, data) => {
+      if (err) {
+        return res.json(err);
+      } else {
+        return res.json(data);
+      }
+      console.log("mysql_pool.release()");
+      connection.release();
+    });
+  });
 });
 
 app.post("/topics", (req, res) => {

@@ -15,16 +15,17 @@ const router = createBrowserRouter([
         path: "/",
         element: <HomePage />,
       },
-      {
-        path: "/&#x00AE;",
-        element: <RegisterPage />,
-      },
-      { path: "/admin/newpost", element: <WritePage /> },
+
+      { path: "/admin/post", element: <WritePage /> },
       {
         path: "/admin/topic",
         element: <TopicPage />,
       },
     ],
+  },
+  {
+    path: "/register",
+    element: <RegisterPage />,
   },
   {
     path: "/login",
