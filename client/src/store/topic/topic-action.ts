@@ -50,6 +50,9 @@ export const addNewTopic = (topicName: string) => {
   };
 };
 export const editTopic = (topicName: string, topicId?: number) => {
+  console.log("++++++++++++++++++++++++++++++++");
+  console.log(topicName);
+  console.log(topicId);
   return async (dispatch: Dispatch) => {
     try {
       const response = await axios.put(

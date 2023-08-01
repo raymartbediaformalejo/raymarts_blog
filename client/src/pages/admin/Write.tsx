@@ -9,12 +9,16 @@ import { Chip } from "@mui/material";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import { Topic } from "../../interface/ITopic";
-import { iPost } from "../../interface/iPost";
 import {
   setCategoryToStore,
+  setContentToStore,
   setInputValueToStore,
+  setIsFeatureToStore,
+  setStatusToStore,
   setTopicToStore,
+  setVisibilityToStore,
 } from "../../store/post/post-slice";
+import { addPost } from "../../store/post/post-action";
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
@@ -71,21 +75,18 @@ const WritePage = () => {
   const tempTopic = useAppSelector((state) => state.post.postItem.topic);
   const tempCateg = useAppSelector((state) => state.post.postItem.category);
   const tempTitle = useAppSelector((state) => state.post.postItem.title);
+  const tempSummary = useAppSelector((state) => state.post.postItem.summary);
+  const tempIsFeatured = useAppSelector(
+    (state) => state.post.postItem.isFeatured
+  );
+  const tempContent = useAppSelector((state) => state.post.postItem.content);
+  const tempVisibility = useAppSelector(
+    (state) => state.post.postItem.visibility
+  );
+  const tempStatus = useAppSelector((state) => state.post.postItem.status);
+  const [imageSrc, setImageSrc] = useState<string | ArrayBuffer | null>();
   console.log(postItem);
-  console.log(tempCateg);
-  console.log(tempTopic);
-  console.log(tempTitle);
-  const [post, setPost] = useState<iPost>({
-    category: "",
-    topic: [{ id: 0, name: "" }],
-    title: "",
-    summary: "",
-    coverPhoto: "",
-    isFeatured: false,
-    content: "",
-    status: "",
-    visibility: "",
-  });
+
   useEffect(() => {
     dispatch(fetchTopicData());
   }, [dispatch]);
@@ -115,34 +116,115 @@ const WritePage = () => {
   };
 
   const handleClickIsFeatured = () => {
-    setPost((prev) => ({ ...prev, isFeatured: !prev.isFeatured }));
+    // setPost((prev) => ({ ...prev, isFeatured: !prev.isFeatured }));
+    dispatch(setIsFeatureToStore());
   };
   const handleChangeContent = (value: string) => {
-    setPost((prev) => ({ ...prev, content: value }));
+    // setPost((prev) => ({ ...prev, content: value }));
+    dispatch(setContentToStore(value));
   };
 
   const handleClickSaveAsDraft = () => {
-    setPost((prev) => ({ ...prev, status: "draft" }));
+    dispatch(setStatusToStore());
   };
 
   const handleChangeVisibility = (
     _: React.SyntheticEvent,
     value: string | null
   ) => {
-    setPost((prev) => ({ ...prev, visibility: value || "" }));
+    // setPost((prev) => ({ ...prev, visibility: value || "" }));
+    dispatch(setVisibilityToStore(value));
   };
 
-  const imageOnChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handlerChangeCoverPhoto = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const reader = new FileReader();
 
-    // reader.onload = function (onLoadEvent) {
-    //   setImageSrc(onLoadEvent.target.result);
-    // };
-    if (event.target.files) {
-      console.log(event.target.files[0]);
-      reader.readAsDataURL(event.target.files[0]);
+    reader.onload = function (onLoadEvent) {
+      if (onLoadEvent.target) {
+        setImageSrc(onLoadEvent.target.result);
+      }
+    };
+
+    const fileInput = event.target as HTMLInputElement; // Explicitly cast to HTMLInputElement
+    if (fileInput.files) {
+      reader.readAsDataURL(fileInput.files[0]);
+      // console.log(fileInput.files);
     }
   };
+
+  // function async uploadImageToCloudinary<T>(formData: T): void {
+  //   try {
+  //     const response = await axios.post(
+  //       "https://api.cloudinary.com/v1_1/dkppw65bv/image/upload",
+  //       formData
+  //     );
+  //     const imageData = response.data;
+  //     return imageData;
+  //   } catch (error) {
+  //     console.error("Error uploading image:", error);
+  //     throw error;
+  //   }
+  // };
+
+  const handleClickSavePost = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log(e.target);
+
+    const form = e.target as HTMLFormElement;
+
+    const fileInput = form.querySelector<HTMLInputElement>("#coverPhoto");
+    console.log(fileInput);
+    dispatch(addPost(postItem, fileInput));
+    // if (fileInput && fileInput.files) {
+    //   const formData = new FormData();
+    //   for (const file of fileInput.files) {
+    //     formData.append("file", file);
+    //   }
+
+    //   formData.append("upload_preset", "ml_default");
+    //   console.log(typeof formData);
+
+    //   try {
+    //     const response = await axios.post(
+    //       "https://api.cloudinary.com/v1_1/dkppw65bv/image/upload",
+    //       formData
+    //     );
+    //     const imageData = response.data;
+
+    //     console.log("Image data:", imageData.secure_url);
+    //     // if (imageData.secure_url) {
+    //     //   dispatch(setCoverPhotoToStore(imageData.imageData.secure_url));
+    //     // }
+    //   } catch (error) {
+    //     console.error("Error uploading image:", error);
+    //   }
+    // }
+  };
+
+  // const handleClickSavePost = (e: HTMLFormEvent) => {
+  //   e.preventDefault();
+  //   console.log(e.target);
+
+  //   const form = e.target;
+
+  //   const fileInput = Array.from(form.elements).find(
+  //     ({ id }) => id === "coverPhoto"
+  //   );
+  //   // // if (fileInput) {
+  //   //   console.log(fileInput as Element);
+  //   // }
+
+  //   const formData = new FormData();
+
+  //   if (fileInput) {
+  //     for (const file of fileInput.files) {
+  //       formData.append("file", file);
+  //     }
+  //   }
+  // dispatch(addPost(postItem));
+  // };
   // console.log(post);
 
   return (
@@ -151,7 +233,7 @@ const WritePage = () => {
         <h2 className="mx-4 font-semibold text-blue text-[20px] mb-4">
           Create blog post
         </h2>
-        <form className="flex flex-col gap-8">
+        <form onSubmit={handleClickSavePost} className="flex flex-col gap-8">
           <div className="bg-white">
             <div className="flex flex-col gap-4 px-4 pt-8">
               {/* CATEGORY */}
@@ -272,6 +354,7 @@ const WritePage = () => {
                   onChange={handleChangeInput}
                   id="title"
                   name="title"
+                  value={tempTitle}
                   className="hover:border-[#000] focus:border-blue mt-1"
                 />
               </div>
@@ -285,6 +368,7 @@ const WritePage = () => {
                   onChange={handleChangeInput}
                   name="summary"
                   id="summary"
+                  value={tempSummary}
                   className="hover:border-[#000] focus:border-blue mt-1"
                 />
               </div>
@@ -300,18 +384,24 @@ const WritePage = () => {
                 <label className="block">
                   <span className="select-none sr-only">Choose photo</span>
                   <input
-                    onChange={imageOnChangeHandler}
-                    id="cover-photo"
+                    onChange={handlerChangeCoverPhoto}
+                    id="coverPhoto"
                     name="coverPhoto"
                     type="file"
                     className="mt-1 block w-full text-sm text-grayDark file:mr-4 file:py-2 file:px-3 file:rounded-md file:border file:border-gray/50 file:text-sm file:font-semibold file:bg-[#f3f3f3] file:text-gray/90 hover:file:bg-[#F7F7F7]/10 "
                   />
                 </label>
+                {typeof imageSrc && imageSrc === "string" ? (
+                  <img src={imageSrc} />
+                ) : (
+                  ""
+                )}
               </div>
 
               {/* IS FEATURED BLOG */}
               <div className="mt-2">
                 <Checkbox
+                  checked={tempIsFeatured}
                   onClick={handleClickIsFeatured}
                   id="isFeatured"
                   className="p-0 m-0 "
@@ -332,7 +422,7 @@ const WritePage = () => {
                   theme="snow"
                   modules={modules}
                   formats={formats}
-                  value={post.content}
+                  value={tempContent}
                   onChange={handleChangeContent}
                 />
               </Suspense>
@@ -363,7 +453,10 @@ const WritePage = () => {
                 </div>
                 <div className="flex items-center gap-2">
                   <p className="text-[#747577] text-sm">Status:</p>
-                  <p>Draft</p>
+                  <p>
+                    {tempStatus &&
+                      tempStatus.charAt(0).toUpperCase() + tempStatus.slice(1)}
+                  </p>
                 </div>
 
                 {/* VISIBILITY */}
@@ -380,6 +473,7 @@ const WritePage = () => {
                     id="visibility"
                     options={visibilityOptions}
                     size="small"
+                    value={tempVisibility}
                     sx={{
                       marginTop: "4px",
                       outlineOffset: "3px solid rgb(14 165 233)",
@@ -392,7 +486,9 @@ const WritePage = () => {
                   />
                 </div>
                 <div className="flex gap-4 mt-8">
-                  <button className="w-2/4">Delete</button>
+                  <button type="button" className="w-2/4">
+                    Delete
+                  </button>
                   <button className="w-2/4" type="submit">
                     Publish
                   </button>

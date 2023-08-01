@@ -57,10 +57,11 @@ const TopicPage = () => {
       } else if (toDeleteTopicId) {
         dispatch(deleteTopic(toDeleteTopicId));
         setOpenDelete(false);
-      } else if (toEditTopicId && oldEditTopicName) {
-        dispatch(editTopic(toDeleteTopicName, toDeleteTopicId));
+      } else if (toEditTopicId && oldEditTopicName && toEditTopicName) {
+        dispatch(editTopic(toEditTopicName, toEditTopicId));
         setOpenEdit(false);
       }
+      window.location.reload();
     } catch (error) {
       console.error(`💥💥 ${error}`);
     }
@@ -70,8 +71,10 @@ const TopicPage = () => {
     setNewTopic(e.target.value);
   };
   const handlerChangeEditTopicName = (e: ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.value);
     setToEditTopicName(e.target.value);
   };
+
   return (
     <Fragment>
       {openEdit && oldEditTopicName && (

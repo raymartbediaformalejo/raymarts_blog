@@ -6,7 +6,7 @@ interface Topic {
   name: string;
 }
 
-interface PostState {
+export interface PostState {
   postItem: {
     category: string;
     topic: Topic[];
@@ -15,8 +15,8 @@ interface PostState {
     coverPhoto: string;
     isFeatured: boolean;
     content: string;
-    status: string;
-    visibility: string;
+    status?: string;
+    visibility: string | null;
   };
 }
 
@@ -29,7 +29,7 @@ const initialState: PostState = {
     coverPhoto: "",
     isFeatured: false,
     content: "",
-    status: "",
+    status: "Draft",
     visibility: "",
   },
 };
@@ -39,13 +39,13 @@ const postSlice = createSlice({
   initialState,
   reducers: {
     setCategoryToStore: (state, action: PayloadAction<string | null>) => {
-      console.log("++++++++++++++++++++++++++++++++++++++++++++");
-      console.log(state);
-      console.log(action.payload);
       state.postItem.category = action.payload || "";
     },
     setTopicToStore: (state, action: PayloadAction<Topic[]>) => {
       state.postItem.topic = action.payload;
+    },
+    setCoverPhotoToStore: (state, action: PayloadAction<string>) => {
+      state.postItem.coverPhoto = action.payload;
     },
     setInputValueToStore: (
       state,
@@ -54,10 +54,34 @@ const postSlice = createSlice({
       const { name, value } = action.payload;
       state.postItem = { ...state.postItem, [name]: value };
     },
+
+    setIsFeatureToStore: (state) => {
+      state.postItem = {
+        ...state.postItem,
+        isFeatured: !state.postItem.isFeatured,
+      };
+    },
+
+    setContentToStore: (state, action: PayloadAction<string>) => {
+      state.postItem.content = action.payload;
+    },
+
+    setVisibilityToStore: (state, action: PayloadAction<string | null>) => {
+      state.postItem.visibility = action.payload;
+    },
+    setStatusToStore: () => {},
   },
 });
 
-export const { setCategoryToStore, setTopicToStore, setInputValueToStore } =
-  postSlice.actions;
+export const {
+  setCategoryToStore,
+  setTopicToStore,
+  setCoverPhotoToStore,
+  setInputValueToStore,
+  setIsFeatureToStore,
+  setContentToStore,
+  setVisibilityToStore,
+  setStatusToStore,
+} = postSlice.actions;
 
 export default postSlice;
