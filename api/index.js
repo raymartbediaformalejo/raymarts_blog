@@ -112,12 +112,12 @@ app.post("/api/posts", (req, res) => {
   });
 });
 
-app.listen(8800, () => {
-  console.log("Connected to backend!");
-});
-
-// app.listen(() => {
+// app.listen(8800, () => {
 //   console.log("Connected to backend!");
 // });
+
+app.listen(() => {
+  console.log("Connected to backend!");
+});
 
 // export default app
