@@ -116,8 +116,8 @@ app.post("/api/posts", (req, res) => {
 //   console.log("Connected to backend!");
 // });
 
-app.listen(() => {
-  console.log("Connected to backend!");
-});
+// app.listen(() => {
+//   console.log("Connected to backend!");
+// });
 
-// export default app
+export default app;
