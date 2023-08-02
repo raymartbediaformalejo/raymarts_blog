@@ -7,9 +7,7 @@ import { showNotification } from "../ui/ui-slice";
 export const fetchTopicData = () => {
   return async (dispatch: Dispatch) => {
     try {
-      const response = await axios.get(
-        "https://raymarts-blog-api.vercel.app/api/topics"
-      );
+      const response = await axios.get("/api/topics");
       const allTopic: Topic[] = response.data;
       dispatch(replaceTopic(allTopic || []));
     } catch (error) {
@@ -28,12 +26,9 @@ export const fetchTopicData = () => {
 export const addNewTopic = (topicName: string) => {
   return async (dispatch: Dispatch) => {
     try {
-      const response = await axios.post(
-        "https://raymarts-blog-api.vercel.app/api/topics",
-        {
-          name: topicName,
-        }
-      );
+      const response = await axios.post("/api/topics", {
+        name: topicName,
+      });
       console.log(response);
       dispatch(
         showNotification({
@@ -60,12 +55,9 @@ export const editTopic = (topicName: string, topicId?: number) => {
   console.log(topicId);
   return async (dispatch: Dispatch) => {
     try {
-      const response = await axios.put(
-        `https://raymarts-blog-api.vercel.app/api/topics/${topicId}`,
-        {
-          name: topicName,
-        }
-      );
+      const response = await axios.put(`/api/topics/${topicId}`, {
+        name: topicName,
+      });
       console.log(response);
       dispatch(
         showNotification({
@@ -89,9 +81,7 @@ export const editTopic = (topicName: string, topicId?: number) => {
 export const deleteTopic = (topicId: number) => {
   return async (dispatch: Dispatch) => {
     try {
-      const response = await axios.delete(
-        `https://raymarts-blog-api.vercel.app/api/topics/${topicId}`
-      );
+      const response = await axios.delete(`/api/topics/${topicId}`);
       console.log(response);
       dispatch(
         showNotification({
