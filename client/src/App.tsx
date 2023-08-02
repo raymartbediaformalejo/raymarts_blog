@@ -15,9 +15,9 @@ const router = createBrowserRouter([
         element: <HomePage />,
       },
 
-      { path: "/admin/post", element: <WritePage /> },
+      { path: "admin/post", element: <WritePage /> },
       {
-        path: "/admin/topic",
+        path: "admin/topic",
         element: <TopicPage />,
       },
     ],
