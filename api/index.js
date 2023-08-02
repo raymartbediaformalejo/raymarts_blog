@@ -11,8 +11,8 @@ const corsOptions = {
   // origin: "http://localhost:5173",
 
   origin: "https://raymartformalejoblog.vercel.app",
-  credentials: true, //access-control-allow-credentials:true
-  optionSuccessStatus: 200,
+  // credentials: true, //access-control-allow-credentials:true
+  // optionSuccessStatus: 200,
 };
 // const customCors = (req, res, next) => {
 
@@ -111,12 +111,12 @@ app.post("/api/posts", (req, res) => {
   });
 });
 
-// app.listen(8800, () => {
-//   console.log("Connected to backend!");
-// });
-
-app.listen(() => {
+app.listen(8800, () => {
   console.log("Connected to backend!");
 });
+
+// app.listen(() => {
+//   console.log("Connected to backend!");
+// });
 
 // export default app
