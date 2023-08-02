@@ -14,11 +14,7 @@ const db = mysql.createConnection(process.env.DATABASE_URL);
 app.use(express.json());
 app.use(cors());
 
-app.get("/", (req, res) => {
-  res.json("hello this is the backend");
-});
-
-app.get("/topics", (req, res) => {
+app.get("/api/topics", (req, res) => {
   const q = "SELECT * FROM topic";
   db.query(q, (err, data) => {
     if (err) {
@@ -49,7 +45,7 @@ app.get("/topics", (req, res) => {
   // });
 });
 
-app.post("/topics", (req, res) => {
+app.post("/api/topics", (req, res) => {
   const q = "INSERT INTO topic (`name`) VALUES (?)";
   const values = [req.body.name];
 
@@ -79,7 +75,7 @@ app.post("/topics", (req, res) => {
   });
 });
 
-app.delete("/topics/:id", (req, res) => {
+app.delete("/api/topics/:id", (req, res) => {
   const topicId = req.params.id;
   const q = "DELETE FROM topic WHERE id = ?";
   db.query(q, [topicId], (err, data) => {
@@ -103,7 +99,7 @@ app.delete("/topics/:id", (req, res) => {
   // });
 });
 
-app.put("/topics/:id", (req, res) => {
+app.put("/api/topics/:id", (req, res) => {
   const topicId = req.params.id;
   const q = "UPDATE topic SET `name` = ? WHERE id = ?";
   const values = [req.body.name];
