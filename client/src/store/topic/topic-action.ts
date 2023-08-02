@@ -7,7 +7,9 @@ import { showNotification } from "../ui/ui-slice";
 export const fetchTopicData = () => {
   return async (dispatch: Dispatch) => {
     try {
-      const response = await axios.get("http://localhost:8800/topics");
+      const response = await axios.get(
+        "https://raymarts-blog-api.vercel.app/topics"
+      );
       const allTopic: Topic[] = response.data;
       dispatch(replaceTopic(allTopic || []));
     } catch (error) {
@@ -26,9 +28,12 @@ export const fetchTopicData = () => {
 export const addNewTopic = (topicName: string) => {
   return async (dispatch: Dispatch) => {
     try {
-      const response = await axios.post("http://localhost:8800/topics", {
-        name: topicName,
-      });
+      const response = await axios.post(
+        "https://raymarts-blog-api.vercel.app/topics",
+        {
+          name: topicName,
+        }
+      );
       console.log(response);
       dispatch(
         showNotification({
@@ -56,7 +61,7 @@ export const editTopic = (topicName: string, topicId?: number) => {
   return async (dispatch: Dispatch) => {
     try {
       const response = await axios.put(
-        `http://localhost:8800/topics/${topicId}`,
+        `https://raymarts-blog-api.vercel.app/topics/${topicId}`,
         {
           name: topicName,
         }
@@ -85,7 +90,7 @@ export const deleteTopic = (topicId: number) => {
   return async (dispatch: Dispatch) => {
     try {
       const response = await axios.delete(
-        `http://localhost:8800/topics/${topicId}`
+        `https://raymarts-blog-api.vercel.app/topics/${topicId}`
       );
       console.log(response);
       dispatch(

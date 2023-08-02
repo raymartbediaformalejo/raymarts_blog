@@ -57,17 +57,20 @@ export const addPost = (
       console.log("????????????????????????????????????????????????");
       console.log(coverImage);
 
-      const response = await axios.post("http://localhost:8800/api/posts", {
-        category,
-        topic: topicJSON,
-        title,
-        summary,
-        coverPhoto: coverImage,
-        isFeatured: isFeaturedString,
-        content,
-        status,
-        visibility,
-      });
+      const response = await axios.post(
+        "https://raymarts-blog-api.vercel.app/api/posts",
+        {
+          category,
+          topic: topicJSON,
+          title,
+          summary,
+          coverPhoto: coverImage,
+          isFeatured: isFeaturedString,
+          content,
+          status,
+          visibility,
+        }
+      );
       console.log(response);
       dispatch(setCoverPhotoToStore(coverImage));
       dispatch(
