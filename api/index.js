@@ -6,11 +6,36 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
+const corsOptions = {
+  // origin: "https://raymartformalejoblog.vercel.app",
+  // origin: "http://localhost:5173",
 
+  origin: "http://localhost:5173",
+  credentials: true, //access-control-allow-credentials:true
+  optionSuccessStatus: 200,
+};
+// const customCors = (req, res, next) => {
+
+//   // Allow requests from all origins (*), you can change this to your specific client URL if needed
+//   res.header("Access-Control-Allow-Origin", "*");
+//   res.header(
+//     "Access-Control-Allow-Headers",
+//     "Origin, X-Requested-With, Content-Type, Accept"
+//   );
+//   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+//   next();
+// };
 const db = mysql.createConnection(process.env.DATABASE_URL);
 
 app.use(express.json());
-app.use(cors());
+// Use cors with the specified options
+app.use(cors(corsOptions));
+
+// Set Access-Control-Allow-Methods header
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  next();
+});
 
 app.get("/api/topics", (req, res) => {
   const q = "SELECT * FROM topic";
@@ -86,6 +111,6 @@ app.post("/api/posts", (req, res) => {
   });
 });
 
-app.listen("https://raymarts-blog-api.vercel.app", () => {
+app.listen(8800, () => {
   console.log("Connected to backend!");
 });
