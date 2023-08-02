@@ -7,7 +7,9 @@ import { showNotification } from "../ui/ui-slice";
 export const fetchTopicData = () => {
   return async (dispatch: Dispatch) => {
     try {
-      const response = await axios.get("http://localhost:8800/api/topics");
+      const response = await axios.get(
+        "https://raymarts-blog-api.vercel.app/api/topics"
+      );
       const allTopic: Topic[] = response.data;
       dispatch(replaceTopic(allTopic || []));
     } catch (error) {

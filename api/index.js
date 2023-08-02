@@ -10,7 +10,7 @@ const corsOptions = {
   // origin: "https://raymartformalejoblog.vercel.app",
   // origin: "http://localhost:5173",
 
-  origin: "http://localhost:5173",
+  origin: "https://raymartformalejoblog.vercel.app",
   credentials: true, //access-control-allow-credentials:true
   optionSuccessStatus: 200,
 };
