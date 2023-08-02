@@ -8,7 +8,7 @@ export const fetchTopicData = () => {
   return async (dispatch: Dispatch) => {
     try {
       const response = await axios.get(
-        "https://raymarts-blog-api.vercel.app/topics"
+        "https://raymarts-blog-api.vercel.app/api/topics"
       );
       const allTopic: Topic[] = response.data;
       dispatch(replaceTopic(allTopic || []));
@@ -29,7 +29,7 @@ export const addNewTopic = (topicName: string) => {
   return async (dispatch: Dispatch) => {
     try {
       const response = await axios.post(
-        "https://raymarts-blog-api.vercel.app/topics",
+        "https://raymarts-blog-api.vercel.app/api/topics",
         {
           name: topicName,
         }
@@ -61,7 +61,7 @@ export const editTopic = (topicName: string, topicId?: number) => {
   return async (dispatch: Dispatch) => {
     try {
       const response = await axios.put(
-        `https://raymarts-blog-api.vercel.app/topics/${topicId}`,
+        `https://raymarts-blog-api.vercel.app/api/topics/${topicId}`,
         {
           name: topicName,
         }
@@ -90,7 +90,7 @@ export const deleteTopic = (topicId: number) => {
   return async (dispatch: Dispatch) => {
     try {
       const response = await axios.delete(
-        `https://raymarts-blog-api.vercel.app/topics/${topicId}`
+        `https://raymarts-blog-api.vercel.app/api/topics/${topicId}`
       );
       console.log(response);
       dispatch(
