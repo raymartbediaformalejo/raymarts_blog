@@ -11,6 +11,7 @@ const corsOptions = {
   // origin: "http://localhost:5173",
 
   origin: "https://raymartformalejoblog.vercel.app",
+  methods: ["GET", "POST", "PUT", "DELETE"],
   // credentials: true, //access-control-allow-credentials:true
   // optionSuccessStatus: 200,
 };
