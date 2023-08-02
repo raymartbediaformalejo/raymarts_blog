@@ -12,7 +12,7 @@ const corsOptions = {
 
   origin: "https://raymartformalejoblog.vercel.app",
   methods: ["GET", "POST", "PUT", "DELETE"],
-  // credentials: true, //access-control-allow-credentials:true
+  credentials: true, //access-control-allow-credentials:true
   // optionSuccessStatus: 200,
 };
 // const customCors = (req, res, next) => {
