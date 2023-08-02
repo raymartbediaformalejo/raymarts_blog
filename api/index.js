@@ -180,6 +180,6 @@ app.post("/api/posts", (req, res) => {
   // });
 });
 
-app.listen(8800, () => {
+app.listen("https://raymarts-blog-api.vercel.app", () => {
   console.log("Connected to backend!");
 });
