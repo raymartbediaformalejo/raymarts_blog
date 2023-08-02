@@ -6,26 +6,25 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
-const corsOptions = {
-  // origin: "https://raymartformalejoblog.vercel.app",
-  // origin: "http://localhost:5173",
+// const corsOptions = {
+//   // origin: "https://raymartformalejoblog.vercel.app",
+//   // origin: "http://localhost:5173",
 
-  origin: "*",
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true, //access-control-allow-credentials:true
-  // optionSuccessStatus: 200,
-};
-// const customCors = (req, res, next) => {
-
-//   // Allow requests from all origins (*), you can change this to your specific client URL if needed
-//   res.header("Access-Control-Allow-Origin", "*");
-//   res.header(
-//     "Access-Control-Allow-Headers",
-//     "Origin, X-Requested-With, Content-Type, Accept"
-//   );
-//   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-//   next();
+//   origin: "*",
+//   methods: ["GET", "POST", "PUT", "DELETE"],
+//   credentials: true, //access-control-allow-credentials:true
+//   // optionSuccessStatus: 200,
 // };
+const corsOptions = (req, res, next) => {
+  // Allow requests from all origins (*), you can change this to your specific client URL if needed
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  next();
+};
 const db = mysql.createConnection(process.env.DATABASE_URL);
 
 app.use(express.json());
