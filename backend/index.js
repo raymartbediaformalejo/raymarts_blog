@@ -11,7 +11,9 @@ const db = mysql.createConnection(process.env.DATABASE_URL);
 app.use(cors());
 app.use(express.json());
 
-app.use(express.static("dist"));
+app.get("/", (req, res) => {
+  res.json({ msg: "Hello world!" });
+});
 
 app.get("/api/topics", (req, res) => {
   const q = "SELECT * FROM topic";
